@@ -1,6 +1,6 @@
 {% set name = "libnpp" %}
-{% set version = "12.2.5.30" %}
-{% set cuda_version = "12.4" %}
+{% set version = "12.3.0.116" %}
+{% set cuda_version = "12.5" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-ppc64le" %}  # [ppc64le]
 {% set platform = "linux-sbsa" %}  # [aarch64]
@@ -18,15 +18,14 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: 9062bec77b9844663692459255f35fe70cf826bce2fc8065278410fc5f27023f  # [linux64]
-  sha256: 2ada6d5ec9f0a963de3bf2eb1a5e8d431a40fc4c616e1e51e04d96bbbc2604f8  # [ppc64le]
-  sha256: e91905f9a23d749fb8389f8671df67f71f49401d19f955d5029c7ebc3d839f73  # [aarch64]
-  sha256: 56d1a741a3c4f5c4b2fe73dd4eb104ab1defaea3382ed5a65e4b5fe202e9c5b1  # [win]
+  sha256: 63adbc8b71c994761c9b1cb7666baad5c48adfe8806bf4a49941bbdb8fe75cef  # [linux64]
+  sha256: 80e7b3f7b51a0d4c1a43e5aff0261babd1b567966d0dfa87591b26bdd1af95d8  # [aarch64]
+  sha256: 065fcc9b6140d17c63710f7431d9076a8d8a8a1c15906acbe1436318a20b2ce5  # [win]
 
 build:
-  number: 2
+  number: 0
   binary_relocation: false
-  skip: true  # [osx]
+  skip: true  # [osx or ppc64le]
 
 test:
   requires:
