@@ -3,11 +3,13 @@
 {% set cuda_version = "12.9" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-ppc64le" %}  # [ppc64le]
-{% set platform = "linux-sbsa" %}  # [aarch64]
+{% set platform = "linux-sbsa" %}  # [aarch64 and arm_variant_type=="sbsa"]
+{% set platform = "linux-aarch64" %}  # [aarch64 and arm_variant_type=="tegra"]
 {% set platform = "windows-x86_64" %}  # [win]
 {% set target_name = "x86_64-linux" %}  # [linux64]
 {% set target_name = "ppc64le-linux" %}  # [ppc64le]
-{% set target_name = "sbsa-linux" %}  # [aarch64]
+{% set target_name = "sbsa-linux" %}  # [aarch64 and arm_variant_type=="sbsa"]
+{% set target_name = "aarch64-linux" %}  # [aarch64 and arm_variant_type=="tegra"]
 {% set target_name = "x64" %}  # [win]
 {% set extension = "tar.xz" %}  # [not win]
 {% set extension = "zip" %}  # [win]
@@ -19,11 +21,12 @@ package:
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
   sha256: 49351448d896854284ec708c14506eaaceb92aa01fbe35c91d5c52ad482e17ae  # [linux64]
-  sha256: 992d461905366cec4243b26ce7bfe997c0c0eabf53a001333025930a1a0c7237  # [aarch64]
+  sha256: 992d461905366cec4243b26ce7bfe997c0c0eabf53a001333025930a1a0c7237  # [aarch64 and arm_variant_type=="sbsa"]
+  sha256: 50c9f80592eaf4f246c82475143768b848333d9f540782257d42023f5fe68fdf  # [aarch64 and arm_variant_type=="tegra"]
   sha256: cfcfbf59e4e5ce71113c058bd4eba3dd56e4db080932146d4047c0d44b4a558e  # [win]
 
 build:
-  number: 0
+  number: 1
   binary_relocation: false
   skip: true  # [osx or ppc64le]
 
@@ -48,8 +51,7 @@ outputs:
          - cuda-version {{ cuda_version }}
       run:
          - {{ pin_compatible("cuda-version", max_pin="x.x") }}
-      run_constrained:
-        - arm-variant * {{ arm_variant_type }}  # [aarch64]
+         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       requires:
         - patchelf  # [linux]
@@ -98,8 +100,8 @@ outputs:
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
         - {{ pin_subpackage("libnpp", exact=True) }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
+      run_constrained:
         - libnpp-static >={{ version }}      # [linux]
     test:
       commands:
@@ -138,7 +140,6 @@ outputs:
         - cuda-version {{ cuda_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
