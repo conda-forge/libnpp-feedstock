@@ -85,9 +85,6 @@ outputs:
       - Library\include                           # [win]
       - Library\lib\{{ target_name }}             # [win]
     requirements:
-      run:
-        - libnpp >={{ version }}
-    requirements:
       build:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
