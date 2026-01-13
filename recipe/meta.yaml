@@ -120,9 +120,6 @@ outputs:
   - name: libnpp-static
     build:
       skip: True  # [not linux]
-    requirements:
-      run:
-        - libnpp-dev >={{ version }}
     files:
       - targets/{{ target_name }}/lib/libnpp*_static.a
     requirements:
